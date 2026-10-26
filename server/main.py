@@ -1,22 +1,24 @@
-import os
+import logging
 from datetime import datetime, timedelta
 from typing import List, Optional
 from fastapi import FastAPI, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr, Field
 from passlib.context import CryptContext
 from jose import JWTError, jwt
 import asyncpg
+from app.core.config import get_settings
 
-DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://postgres:postgres@localhost:5432/classapp")
-SECRET_KEY = os.getenv("SECRET_KEY", "supersecretkeyclassapp123456789")
+settings = get_settings()
+DATABASE_URL = settings.database_url
+SECRET_KEY = settings.secret_key
 ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24 * 7 # 7 days
+ACCESS_TOKEN_EXPIRE_MINUTES = settings.access_token_expire_minutes
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
-app = FastAPI(title="Smart Class Routine & Tasks API", version="1.0.0")
+app = FastAPI(title="Smart Class Routine & Tasks API", version="2.0.0")
 
 db_pool: Optional[asyncpg.Pool] = None
 
@@ -25,8 +27,8 @@ async def startup():
     global db_pool
     try:
         db_pool = await asyncpg.create_pool(DATABASE_URL)
-    except Exception as e:
-        print(f"Database connection failed: {e}")
+    except Exception:
+        logging.exception("Database connection failed")
 
 @app.on_event("shutdown")
 async def shutdown():
@@ -46,6 +48,13 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
     to_encode.update({"exp": expire})
     return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
 
+
+def create_refresh_token(subject: str) -> str:
+    return create_access_token(
+        {"sub": subject, "type": "refresh"},
+        timedelta(days=settings.refresh_token_expire_days),
+    )
+
 async def get_current_user(token: str = Depends(oauth2_scheme)):
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
@@ -55,7 +64,7 @@ async def get_current_user(token: str = Depends(oauth2_scheme)):
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         email: str = payload.get("sub")
-        if email is None:
+        if email is None or payload.get("type", "access") != "access":
             raise credentials_exception
     except JWTError:
         raise credentials_exception
@@ -68,9 +77,9 @@ async def get_current_user(token: str = Depends(oauth2_scheme)):
 
 # --- Pydantic Models ---
 class UserCreate(BaseModel):
-    username: str
+    username: str = Field(min_length=1, max_length=100)
     email: EmailStr
-    password: str
+    password: str = Field(min_length=8, max_length=128)
 
 class UserResponse(BaseModel):
     id: int
@@ -79,8 +88,13 @@ class UserResponse(BaseModel):
 
 class Token(BaseModel):
     access_token: str
+    refresh_token: str
     token_type: str
     user: UserResponse
+
+
+class RefreshRequest(BaseModel):
+    refresh_token: str = Field(min_length=20)
 
 class ClassroomCreate(BaseModel):
     name: str
@@ -152,7 +166,12 @@ async def register(user: UserCreate):
         )
         user_res = dict(row)
         access_token = create_access_token(data={"sub": user_res["email"]}, expires_delta=timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES))
-        return {"access_token": access_token, "token_type": "bearer", "user": user_res}
+        return {
+            "access_token": access_token,
+            "refresh_token": create_refresh_token(user_res["email"]),
+            "token_type": "bearer",
+            "user": user_res,
+        }
 
 @app.post("/auth/login", response_model=Token)
 async def login(form_data: OAuth2PasswordRequestForm = Depends()):
@@ -162,7 +181,34 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends()):
             raise HTTPException(status_code=400, detail="Incorrect email or password")
         user_res = {"id": user["id"], "username": user["username"], "email": user["email"]}
         access_token = create_access_token(data={"sub": user["email"]}, expires_delta=timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES))
-        return {"access_token": access_token, "token_type": "bearer", "user": user_res}
+        return {
+            "access_token": access_token,
+            "refresh_token": create_refresh_token(user_res["email"]),
+            "token_type": "bearer",
+            "user": user_res,
+        }
+
+
+@app.post("/auth/refresh", response_model=dict)
+async def refresh_token(request: RefreshRequest):
+    try:
+        payload = jwt.decode(request.refresh_token, SECRET_KEY, algorithms=[ALGORITHM])
+        if payload.get("type") != "refresh" or not payload.get("sub"):
+            raise JWTError
+        access_token = create_access_token(
+            {"sub": payload["sub"]},
+            timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES),
+        )
+        return {
+            "access_token": access_token,
+            "refresh_token": create_refresh_token(payload["sub"]),
+            "token_type": "bearer",
+        }
+    except JWTError as error:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid refresh token",
+        ) from error
 
 @app.get("/classrooms", response_model=List[ClassroomResponse])
 async def get_classrooms(current_user: dict = Depends(get_current_user)):

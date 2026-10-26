@@ -67,7 +67,8 @@ class _AuthWrapperState extends State<AuthWrapper> {
   Widget build(BuildContext context) {
     if (_isLoading) {
       return const Scaffold(
-        body: Center(child: CircularProgressIndicator(color: Color(0xFF6366F1))),
+        body:
+            Center(child: CircularProgressIndicator(color: Color(0xFF6366F1))),
       );
     }
     return _isLoggedIn ? const DashboardScreen() : const LoginScreen();
@@ -89,14 +90,23 @@ class _LoginScreenState extends State<LoginScreen> {
   String? _error;
 
   void _login() async {
-    setState(() { _isLoading = true; _error = null; });
+    setState(() {
+      _isLoading = true;
+      _error = null;
+    });
     try {
-      await ApiService.login(_emailController.text.trim(), _passwordController.text.trim());
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const DashboardScreen()));
+      await ApiService.login(
+          _emailController.text.trim(), _passwordController.text.trim());
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (_) => const DashboardScreen()));
     } catch (e) {
-      setState(() { _error = e.toString().replaceAll("Exception: ", ""); });
+      setState(() {
+        _error = e.toString().replaceAll("Exception: ", "");
+      });
     } finally {
-      setState(() { _isLoading = false; });
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
@@ -120,27 +130,39 @@ class _LoginScreenState extends State<LoginScreen> {
               children: [
                 const Icon(Icons.school, size: 64, color: Color(0xFF6366F1)),
                 const SizedBox(height: 16),
-                Text('SmartClass & Tasks', textAlign: TextAlign.center, style: GoogleFonts.inter(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white)),
+                Text('SmartClass & Tasks',
+                    textAlign: TextAlign.center,
+                    style: GoogleFonts.inter(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white)),
                 const SizedBox(height: 8),
-                Text('Sign in to manage your classes, routines, and alarms', textAlign: TextAlign.center, style: TextStyle(color: Colors.white60, fontSize: 14)),
+                Text('Sign in to manage your classes, routines, and alarms',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.white60, fontSize: 14)),
                 const SizedBox(height: 24),
                 if (_error != null) ...[
                   Container(
                     padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(color: Colors.red.withOpacity(0.1), borderRadius: BorderRadius.circular(8)),
-                    child: Text(_error!, style: const TextStyle(color: Colors.redAccent)),
+                    decoration: BoxDecoration(
+                        color: Colors.red.withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(8)),
+                    child: Text(_error!,
+                        style: const TextStyle(color: Colors.redAccent)),
                   ),
                   const SizedBox(height: 16),
                 ],
                 TextField(
                   controller: _emailController,
-                  decoration: const InputDecoration(labelText: 'Email', prefixIcon: Icon(Icons.email)),
+                  decoration: const InputDecoration(
+                      labelText: 'Email', prefixIcon: Icon(Icons.email)),
                 ),
                 const SizedBox(height: 16),
                 TextField(
                   controller: _passwordController,
                   obscureText: true,
-                  decoration: const InputDecoration(labelText: 'Password', prefixIcon: Icon(Icons.lock)),
+                  decoration: const InputDecoration(
+                      labelText: 'Password', prefixIcon: Icon(Icons.lock)),
                 ),
                 const SizedBox(height: 24),
                 ElevatedButton(
@@ -148,14 +170,22 @@ class _LoginScreenState extends State<LoginScreen> {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF6366F1),
                     padding: const EdgeInsets.symmetric(vertical: 16),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10)),
                   ),
-                  child: _isLoading ? const CircularProgressIndicator(color: Colors.white) : const Text('Sign In', style: TextStyle(fontSize: 16, color: Colors.white)),
+                  child: _isLoading
+                      ? const CircularProgressIndicator(color: Colors.white)
+                      : const Text('Sign In',
+                          style: TextStyle(fontSize: 16, color: Colors.white)),
                 ),
                 const SizedBox(height: 16),
                 TextButton(
-                  onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const RegisterScreen())),
-                  child: const Text('Don\'t have an account? Sign Up', style: TextStyle(color: Color(0xFF818CF8))),
+                  onPressed: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (_) => const RegisterScreen())),
+                  child: const Text('Don\'t have an account? Sign Up',
+                      style: TextStyle(color: Color(0xFF818CF8))),
                 ),
               ],
             ),
@@ -181,14 +211,25 @@ class _RegisterScreenState extends State<RegisterScreen> {
   String? _error;
 
   void _register() async {
-    setState(() { _isLoading = true; _error = null; });
+    setState(() {
+      _isLoading = true;
+      _error = null;
+    });
     try {
-      await ApiService.register(_usernameController.text.trim(), _emailController.text.trim(), _passwordController.text.trim());
-      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (_) => const DashboardScreen()), (route) => false);
+      await ApiService.register(_usernameController.text.trim(),
+          _emailController.text.trim(), _passwordController.text.trim());
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (_) => const DashboardScreen()),
+          (route) => false);
     } catch (e) {
-      setState(() { _error = e.toString().replaceAll("Exception: ", ""); });
+      setState(() {
+        _error = e.toString().replaceAll("Exception: ", "");
+      });
     } finally {
-      setState(() { _isLoading = false; });
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
@@ -211,30 +252,41 @@ class _RegisterScreenState extends State<RegisterScreen> {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Text('Join SmartClass', textAlign: TextAlign.center, style: GoogleFonts.inter(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white)),
+                Text('Join SmartClass',
+                    textAlign: TextAlign.center,
+                    style: GoogleFonts.inter(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white)),
                 const SizedBox(height: 24),
                 if (_error != null) ...[
                   Container(
                     padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(color: Colors.red.withOpacity(0.1), borderRadius: BorderRadius.circular(8)),
-                    child: Text(_error!, style: const TextStyle(color: Colors.redAccent)),
+                    decoration: BoxDecoration(
+                        color: Colors.red.withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(8)),
+                    child: Text(_error!,
+                        style: const TextStyle(color: Colors.redAccent)),
                   ),
                   const SizedBox(height: 16),
                 ],
                 TextField(
                   controller: _usernameController,
-                  decoration: const InputDecoration(labelText: 'Username', prefixIcon: Icon(Icons.person)),
+                  decoration: const InputDecoration(
+                      labelText: 'Username', prefixIcon: Icon(Icons.person)),
                 ),
                 const SizedBox(height: 16),
                 TextField(
                   controller: _emailController,
-                  decoration: const InputDecoration(labelText: 'Email', prefixIcon: Icon(Icons.email)),
+                  decoration: const InputDecoration(
+                      labelText: 'Email', prefixIcon: Icon(Icons.email)),
                 ),
                 const SizedBox(height: 16),
                 TextField(
                   controller: _passwordController,
                   obscureText: true,
-                  decoration: const InputDecoration(labelText: 'Password', prefixIcon: Icon(Icons.lock)),
+                  decoration: const InputDecoration(
+                      labelText: 'Password', prefixIcon: Icon(Icons.lock)),
                 ),
                 const SizedBox(height: 24),
                 ElevatedButton(
@@ -242,9 +294,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF6366F1),
                     padding: const EdgeInsets.symmetric(vertical: 16),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10)),
                   ),
-                  child: _isLoading ? const CircularProgressIndicator(color: Colors.white) : const Text('Register', style: TextStyle(fontSize: 16, color: Colors.white)),
+                  child: _isLoading
+                      ? const CircularProgressIndicator(color: Colors.white)
+                      : const Text('Register',
+                          style: TextStyle(fontSize: 16, color: Colors.white)),
                 ),
               ],
             ),
@@ -290,21 +346,32 @@ class _DashboardScreenState extends State<DashboardScreen> {
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            TextField(controller: nameController, decoration: const InputDecoration(labelText: 'Classroom Name')),
-            TextField(controller: sectionController, decoration: const InputDecoration(labelText: 'Section (e.g. A, Semester 4)')),
-            TextField(controller: descController, decoration: const InputDecoration(labelText: 'Description')),
+            TextField(
+                controller: nameController,
+                decoration: const InputDecoration(labelText: 'Classroom Name')),
+            TextField(
+                controller: sectionController,
+                decoration: const InputDecoration(
+                    labelText: 'Section (e.g. A, Semester 4)')),
+            TextField(
+                controller: descController,
+                decoration: const InputDecoration(labelText: 'Description')),
           ],
         ),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
+          TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Cancel')),
           ElevatedButton(
             onPressed: () async {
               try {
-                await ApiService.createClassroom(nameController.text, sectionController.text, descController.text);
+                await ApiService.createClassroom(nameController.text,
+                    sectionController.text, descController.text);
                 Navigator.pop(context);
                 _loadClassrooms();
               } catch (e) {
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.toString())));
+                ScaffoldMessenger.of(context)
+                    .showSnackBar(SnackBar(content: Text(e.toString())));
               }
             },
             child: const Text('Create'),
@@ -326,13 +393,17 @@ class _DashboardScreenState extends State<DashboardScreen> {
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              TextField(controller: codeController, decoration: const InputDecoration(labelText: 'Invite Code')),
+              TextField(
+                  controller: codeController,
+                  decoration: const InputDecoration(labelText: 'Invite Code')),
               const SizedBox(height: 16),
               DropdownButtonFormField<String>(
-                value: role,
+                initialValue: role,
                 items: const [
-                  DropdownMenuItem(value: 'viewer', child: Text('Viewer (Read Only)')),
-                  DropdownMenuItem(value: 'editor', child: Text('Collaborator (Can Edit)')),
+                  DropdownMenuItem(
+                      value: 'viewer', child: Text('Viewer (Read Only)')),
+                  DropdownMenuItem(
+                      value: 'editor', child: Text('Collaborator (Can Edit)')),
                 ],
                 onChanged: (val) => setStateSB(() => role = val!),
                 decoration: const InputDecoration(labelText: 'Join As'),
@@ -340,7 +411,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
             ],
           ),
           actions: [
-            TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
+            TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('Cancel')),
             ElevatedButton(
               onPressed: () async {
                 try {
@@ -348,7 +421,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   Navigator.pop(context);
                   _loadClassrooms();
                 } catch (e) {
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.toString())));
+                  ScaffoldMessenger.of(context)
+                      .showSnackBar(SnackBar(content: Text(e.toString())));
                 }
               },
               child: const Text('Join'),
@@ -368,9 +442,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
           IconButton(
             icon: const Icon(Icons.logout),
             onPressed: () async {
-              final prefs = await SharedPreferences.getInstance();
-              await prefs.clear();
-              Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const LoginScreen()));
+              await ApiService.logout();
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (_) => const LoginScreen()));
             },
           ),
         ],
@@ -382,7 +456,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
             return const Center(child: CircularProgressIndicator());
           }
           if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}', style: const TextStyle(color: Colors.red)));
+            return Center(
+                child: Text('Error: ${snapshot.error}',
+                    style: const TextStyle(color: Colors.red)));
           }
           final classrooms = snapshot.data ?? [];
           if (classrooms.isEmpty) {
@@ -392,7 +468,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 children: [
                   const Icon(Icons.class_, size: 80, color: Colors.white24),
                   const SizedBox(height: 16),
-                  const Text('No classrooms found.', style: TextStyle(color: Colors.white60, fontSize: 18)),
+                  const Text('No classrooms found.',
+                      style: TextStyle(color: Colors.white60, fontSize: 18)),
                   const SizedBox(height: 24),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -426,7 +503,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
             itemBuilder: (context, index) {
               final c = classrooms[index];
               return InkWell(
-                onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => ClassroomDetailScreen(classroom: c))),
+                onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (_) => ClassroomDetailScreen(classroom: c))),
                 borderRadius: BorderRadius.circular(16),
                 child: Container(
                   padding: const EdgeInsets.all(20),
@@ -439,27 +519,48 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.between,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 8, vertical: 4),
                             decoration: BoxDecoration(
-                              color: c.role == 'owner' ? Colors.indigo : (c.role == 'editor' ? Colors.teal : Colors.blueGrey),
+                              color: c.role == 'owner'
+                                  ? Colors.indigo
+                                  : (c.role == 'editor'
+                                      ? Colors.teal
+                                      : Colors.blueGrey),
                               borderRadius: BorderRadius.circular(6),
                             ),
-                            child: Text(c.role.toUpperCase(), style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.white)),
+                            child: Text(c.role.toUpperCase(),
+                                style: const TextStyle(
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white)),
                           ),
-                          Text('Code: ${c.inviteCode}', style: const TextStyle(fontSize: 12, color: Colors.white60)),
+                          Text('Code: ${c.inviteCode}',
+                              style: const TextStyle(
+                                  fontSize: 12, color: Colors.white60)),
                         ],
                       ),
                       const Spacer(),
-                      Text(c.name, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white)),
+                      Text(c.name,
+                          style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white)),
                       if (c.section != null) ...[
                         const SizedBox(height: 4),
-                        Text(c.section!, style: const TextStyle(color: Color(0xFF818CF8), fontSize: 13)),
+                        Text(c.section!,
+                            style: const TextStyle(
+                                color: Color(0xFF818CF8), fontSize: 13)),
                       ],
                       const SizedBox(height: 8),
-                      Text(c.description ?? 'No description', maxLines: 2, overflow: TextOverflow.ellipsis, style: const TextStyle(color: Colors.white60, fontSize: 12)),
+                      Text(c.description ?? 'No description',
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                              color: Colors.white60, fontSize: 12)),
                     ],
                   ),
                 ),
@@ -487,7 +588,8 @@ class ClassroomDetailScreen extends StatefulWidget {
   State<ClassroomDetailScreen> createState() => _ClassroomDetailScreenState();
 }
 
-class _ClassroomDetailScreenState extends State<ClassroomDetailScreen> with SingleTickerProviderStateMixin {
+class _ClassroomDetailScreenState extends State<ClassroomDetailScreen>
+    with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
   @override
@@ -498,14 +600,17 @@ class _ClassroomDetailScreenState extends State<ClassroomDetailScreen> with Sing
 
   @override
   Widget build(BuildContext context) {
-    bool canEdit = widget.classroom.role == 'owner' || widget.classroom.role == 'editor';
+    bool canEdit =
+        widget.classroom.role == 'owner' || widget.classroom.role == 'editor';
     return Scaffold(
       appBar: AppBar(
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(widget.classroom.name),
-            Text('Invite Code: ${widget.classroom.inviteCode} • Role: ${widget.classroom.role}', style: const TextStyle(fontSize: 12, color: Colors.white60)),
+            Text(
+                'Invite Code: ${widget.classroom.inviteCode} • Role: ${widget.classroom.role}',
+                style: const TextStyle(fontSize: 12, color: Colors.white60)),
           ],
         ),
         bottom: TabBar(
@@ -577,16 +682,32 @@ class _RoutineTabState extends State<RoutineTab> {
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            TextField(controller: dayController, decoration: const InputDecoration(labelText: 'Day of Week')),
-            TextField(controller: subjectController, decoration: const InputDecoration(labelText: 'Subject Name')),
-            TextField(controller: startController, decoration: const InputDecoration(labelText: 'Start Time (e.g. 09:00)')),
-            TextField(controller: endController, decoration: const InputDecoration(labelText: 'End Time (e.g. 10:30)')),
-            TextField(controller: roomController, decoration: const InputDecoration(labelText: 'Room')),
-            TextField(controller: instructorController, decoration: const InputDecoration(labelText: 'Instructor')),
+            TextField(
+                controller: dayController,
+                decoration: const InputDecoration(labelText: 'Day of Week')),
+            TextField(
+                controller: subjectController,
+                decoration: const InputDecoration(labelText: 'Subject Name')),
+            TextField(
+                controller: startController,
+                decoration: const InputDecoration(
+                    labelText: 'Start Time (e.g. 09:00)')),
+            TextField(
+                controller: endController,
+                decoration:
+                    const InputDecoration(labelText: 'End Time (e.g. 10:30)')),
+            TextField(
+                controller: roomController,
+                decoration: const InputDecoration(labelText: 'Room')),
+            TextField(
+                controller: instructorController,
+                decoration: const InputDecoration(labelText: 'Instructor')),
           ],
         ),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
+          TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Cancel')),
           ElevatedButton(
             onPressed: () async {
               try {
@@ -601,7 +722,8 @@ class _RoutineTabState extends State<RoutineTab> {
                 Navigator.pop(context);
                 _loadRoutines();
               } catch (e) {
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.toString())));
+                ScaffoldMessenger.of(context)
+                    .showSnackBar(SnackBar(content: Text(e.toString())));
               }
             },
             child: const Text('Add'),
@@ -622,7 +744,9 @@ class _RoutineTabState extends State<RoutineTab> {
           }
           final routines = snapshot.data ?? [];
           if (routines.isEmpty) {
-            return const Center(child: Text('No routines added yet.', style: TextStyle(color: Colors.white60)));
+            return const Center(
+                child: Text('No routines added yet.',
+                    style: TextStyle(color: Colors.white60)));
           }
           return ListView.builder(
             padding: const EdgeInsets.all(16),
@@ -635,22 +759,32 @@ class _RoutineTabState extends State<RoutineTab> {
                 child: ListTile(
                   leading: CircleAvatar(
                     backgroundColor: const Color(0xFF6366F1),
-                    child: Text(r.dayOfWeek[0], style: const TextStyle(color: Colors.white)),
+                    child: Text(r.dayOfWeek[0],
+                        style: const TextStyle(color: Colors.white)),
                   ),
-                  title: Text(r.subject, style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
-                  subtitle: Text('${r.startTime} - ${r.endTime} | Room: ${r.room ?? "N/A"} | Inst: ${r.instructor ?? "N/A"}', style: const TextStyle(color: Colors.white60)),
-                  trailing: Text(r.dayOfWeek, style: const TextStyle(color: Color(0xFF818CF8), fontWeight: FontWeight.bold)),
+                  title: Text(r.subject,
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold, color: Colors.white)),
+                  subtitle: Text(
+                      '${r.startTime} - ${r.endTime} | Room: ${r.room ?? "N/A"} | Inst: ${r.instructor ?? "N/A"}',
+                      style: const TextStyle(color: Colors.white60)),
+                  trailing: Text(r.dayOfWeek,
+                      style: const TextStyle(
+                          color: Color(0xFF818CF8),
+                          fontWeight: FontWeight.bold)),
                 ),
               );
             },
           );
         },
       ),
-      floatingActionButton: widget.canEdit ? FloatingActionButton(
-        onPressed: _showAddDialog,
-        backgroundColor: const Color(0xFF6366F1),
-        child: const Icon(Icons.add, color: Colors.white),
-      ) : null,
+      floatingActionButton: widget.canEdit
+          ? FloatingActionButton(
+              onPressed: _showAddDialog,
+              backgroundColor: const Color(0xFF6366F1),
+              child: const Icon(Icons.add, color: Colors.white),
+            )
+          : null,
     );
   }
 }
@@ -693,11 +827,15 @@ class _TasksTabState extends State<TasksTab> {
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              TextField(controller: titleController, decoration: const InputDecoration(labelText: 'Task Title')),
-              TextField(controller: descController, decoration: const InputDecoration(labelText: 'Description')),
+              TextField(
+                  controller: titleController,
+                  decoration: const InputDecoration(labelText: 'Task Title')),
+              TextField(
+                  controller: descController,
+                  decoration: const InputDecoration(labelText: 'Description')),
               const SizedBox(height: 16),
               DropdownButtonFormField<String>(
-                value: priority,
+                initialValue: priority,
                 items: const [
                   DropdownMenuItem(value: 'low', child: Text('Low')),
                   DropdownMenuItem(value: 'medium', child: Text('Medium')),
@@ -710,7 +848,9 @@ class _TasksTabState extends State<TasksTab> {
             ],
           ),
           actions: [
-            TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
+            TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('Cancel')),
             ElevatedButton(
               onPressed: () async {
                 try {
@@ -723,7 +863,8 @@ class _TasksTabState extends State<TasksTab> {
                   Navigator.pop(context);
                   _loadTasks();
                 } catch (e) {
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.toString())));
+                  ScaffoldMessenger.of(context)
+                      .showSnackBar(SnackBar(content: Text(e.toString())));
                 }
               },
               child: const Text('Add'),
@@ -745,7 +886,9 @@ class _TasksTabState extends State<TasksTab> {
           }
           final tasks = snapshot.data ?? [];
           if (tasks.isEmpty) {
-            return const Center(child: Text('No tasks created yet.', style: TextStyle(color: Colors.white60)));
+            return const Center(
+                child: Text('No tasks created yet.',
+                    style: TextStyle(color: Colors.white60)));
           }
           return ListView.builder(
             padding: const EdgeInsets.all(16),
@@ -757,18 +900,33 @@ class _TasksTabState extends State<TasksTab> {
                 margin: const EdgeInsets.only(bottom: 12),
                 child: ListTile(
                   leading: Icon(
-                    t.status == 'completed' ? Icons.check_circle : Icons.radio_button_unchecked,
-                    color: t.status == 'completed' ? Colors.green : Colors.orange,
+                    t.status == 'completed'
+                        ? Icons.check_circle
+                        : Icons.radio_button_unchecked,
+                    color:
+                        t.status == 'completed' ? Colors.green : Colors.orange,
                   ),
-                  title: Text(t.title, style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
-                  subtitle: Text(t.description ?? 'No description', style: const TextStyle(color: Colors.white60)),
+                  title: Text(t.title,
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold, color: Colors.white)),
+                  subtitle: Text(t.description ?? 'No description',
+                      style: const TextStyle(color: Colors.white60)),
                   trailing: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                     decoration: BoxDecoration(
-                      color: t.priority == 'urgent' ? Colors.red : (t.priority == 'high' ? Colors.orange : Colors.blue),
+                      color: t.priority == 'urgent'
+                          ? Colors.red
+                          : (t.priority == 'high'
+                              ? Colors.orange
+                              : Colors.blue),
                       borderRadius: BorderRadius.circular(6),
                     ),
-                    child: Text(t.priority.toUpperCase(), style: const TextStyle(fontSize: 10, color: Colors.white, fontWeight: FontWeight.bold)),
+                    child: Text(t.priority.toUpperCase(),
+                        style: const TextStyle(
+                            fontSize: 10,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold)),
                   ),
                 ),
               );
@@ -776,11 +934,13 @@ class _TasksTabState extends State<TasksTab> {
           );
         },
       ),
-      floatingActionButton: widget.canEdit ? FloatingActionButton(
-        onPressed: _showAddDialog,
-        backgroundColor: const Color(0xFF6366F1),
-        child: const Icon(Icons.add, color: Colors.white),
-      ) : null,
+      floatingActionButton: widget.canEdit
+          ? FloatingActionButton(
+              onPressed: _showAddDialog,
+              backgroundColor: const Color(0xFF6366F1),
+              child: const Icon(Icons.add, color: Colors.white),
+            )
+          : null,
     );
   }
 }
@@ -824,15 +984,27 @@ class _BusTabState extends State<BusTab> {
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            TextField(controller: routeController, decoration: const InputDecoration(labelText: 'Route Name')),
-            TextField(controller: depController, decoration: const InputDecoration(labelText: 'Departure Time')),
-            TextField(controller: arrController, decoration: const InputDecoration(labelText: 'Arrival Time')),
-            TextField(controller: busNoController, decoration: const InputDecoration(labelText: 'Bus Number')),
-            TextField(controller: pickupController, decoration: const InputDecoration(labelText: 'Pickup Point')),
+            TextField(
+                controller: routeController,
+                decoration: const InputDecoration(labelText: 'Route Name')),
+            TextField(
+                controller: depController,
+                decoration: const InputDecoration(labelText: 'Departure Time')),
+            TextField(
+                controller: arrController,
+                decoration: const InputDecoration(labelText: 'Arrival Time')),
+            TextField(
+                controller: busNoController,
+                decoration: const InputDecoration(labelText: 'Bus Number')),
+            TextField(
+                controller: pickupController,
+                decoration: const InputDecoration(labelText: 'Pickup Point')),
           ],
         ),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
+          TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Cancel')),
           ElevatedButton(
             onPressed: () async {
               try {
@@ -846,7 +1018,8 @@ class _BusTabState extends State<BusTab> {
                 Navigator.pop(context);
                 _loadBus();
               } catch (e) {
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.toString())));
+                ScaffoldMessenger.of(context)
+                    .showSnackBar(SnackBar(content: Text(e.toString())));
               }
             },
             child: const Text('Add'),
@@ -867,7 +1040,9 @@ class _BusTabState extends State<BusTab> {
           }
           final list = snapshot.data ?? [];
           if (list.isEmpty) {
-            return const Center(child: Text('No bus schedules added yet.', style: TextStyle(color: Colors.white60)));
+            return const Center(
+                child: Text('No bus schedules added yet.',
+                    style: TextStyle(color: Colors.white60)));
           }
           return ListView.builder(
             padding: const EdgeInsets.all(16),
@@ -878,9 +1053,14 @@ class _BusTabState extends State<BusTab> {
                 color: const Color(0xFF1E293B),
                 margin: const EdgeInsets.only(bottom: 12),
                 child: ListTile(
-                  leading: const Icon(Icons.directions_bus, color: Color(0xFF6366F1), size: 36),
-                  title: Text(b.routeName, style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
-                  subtitle: Text('Dep: ${b.departureTime} | Arr: ${b.arrivalTime} | Bus: ${b.busNumber ?? "N/A"}\nPickup: ${b.pickupPoint ?? "N/A"}', style: const TextStyle(color: Colors.white60)),
+                  leading: const Icon(Icons.directions_bus,
+                      color: Color(0xFF6366F1), size: 36),
+                  title: Text(b.routeName,
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold, color: Colors.white)),
+                  subtitle: Text(
+                      'Dep: ${b.departureTime} | Arr: ${b.arrivalTime} | Bus: ${b.busNumber ?? "N/A"}\nPickup: ${b.pickupPoint ?? "N/A"}',
+                      style: const TextStyle(color: Colors.white60)),
                   isThreeLine: true,
                 ),
               );
@@ -888,11 +1068,13 @@ class _BusTabState extends State<BusTab> {
           );
         },
       ),
-      floatingActionButton: widget.canEdit ? FloatingActionButton(
-        onPressed: _showAddDialog,
-        backgroundColor: const Color(0xFF6366F1),
-        child: const Icon(Icons.add, color: Colors.white),
-      ) : null,
+      floatingActionButton: widget.canEdit
+          ? FloatingActionButton(
+              onPressed: _showAddDialog,
+              backgroundColor: const Color(0xFF6366F1),
+              child: const Icon(Icons.add, color: Colors.white),
+            )
+          : null,
     );
   }
 }
@@ -901,7 +1083,8 @@ class _BusTabState extends State<BusTab> {
 class CustomScheduleTab extends StatefulWidget {
   final Classroom classroom;
   final bool canEdit;
-  const CustomScheduleTab({super.key, required this.classroom, required this.canEdit});
+  const CustomScheduleTab(
+      {super.key, required this.classroom, required this.canEdit});
 
   @override
   State<CustomScheduleTab> createState() => _CustomScheduleTabState();
@@ -933,24 +1116,33 @@ class _CustomScheduleTabState extends State<CustomScheduleTab> {
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            TextField(controller: titleController, decoration: const InputDecoration(labelText: 'Event Title')),
-            TextField(controller: descController, decoration: const InputDecoration(labelText: 'Description')),
+            TextField(
+                controller: titleController,
+                decoration: const InputDecoration(labelText: 'Event Title')),
+            TextField(
+                controller: descController,
+                decoration: const InputDecoration(labelText: 'Description')),
           ],
         ),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
+          TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Cancel')),
           ElevatedButton(
             onPressed: () async {
               try {
                 await ApiService.addCustomSchedule(widget.classroom.id, {
                   'title': titleController.text,
-                  'event_time': DateTime.now().add(const Duration(days: 1)).toIso8601String(),
+                  'event_time': DateTime.now()
+                      .add(const Duration(days: 1))
+                      .toIso8601String(),
                   'description': descController.text,
                 });
                 Navigator.pop(context);
                 _loadEvents();
               } catch (e) {
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.toString())));
+                ScaffoldMessenger.of(context)
+                    .showSnackBar(SnackBar(content: Text(e.toString())));
               }
             },
             child: const Text('Add'),
@@ -971,7 +1163,9 @@ class _CustomScheduleTabState extends State<CustomScheduleTab> {
           }
           final list = snapshot.data ?? [];
           if (list.isEmpty) {
-            return const Center(child: Text('No custom events added yet.', style: TextStyle(color: Colors.white60)));
+            return const Center(
+                child: Text('No custom events added yet.',
+                    style: TextStyle(color: Colors.white60)));
           }
           return ListView.builder(
             padding: const EdgeInsets.all(16),
@@ -983,8 +1177,13 @@ class _CustomScheduleTabState extends State<CustomScheduleTab> {
                 margin: const EdgeInsets.only(bottom: 12),
                 child: ListTile(
                   leading: const Icon(Icons.event, color: Color(0xFF818CF8)),
-                  title: Text(e.title, style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
-                  subtitle: Text('${e.description ?? ""}\nTime: ${e.eventTime.toLocal()}'.trim(), style: const TextStyle(color: Colors.white60)),
+                  title: Text(e.title,
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold, color: Colors.white)),
+                  subtitle: Text(
+                      '${e.description ?? ""}\nTime: ${e.eventTime.toLocal()}'
+                          .trim(),
+                      style: const TextStyle(color: Colors.white60)),
                   isThreeLine: true,
                 ),
               );
@@ -992,11 +1191,13 @@ class _CustomScheduleTabState extends State<CustomScheduleTab> {
           );
         },
       ),
-      floatingActionButton: widget.canEdit ? FloatingActionButton(
-        onPressed: _showAddDialog,
-        backgroundColor: const Color(0xFF6366F1),
-        child: const Icon(Icons.add, color: Colors.white),
-      ) : null,
+      floatingActionButton: widget.canEdit
+          ? FloatingActionButton(
+              onPressed: _showAddDialog,
+              backgroundColor: const Color(0xFF6366F1),
+              child: const Icon(Icons.add, color: Colors.white),
+            )
+          : null,
     );
   }
 }
@@ -1033,9 +1234,11 @@ class _PersonalNotesTabState extends State<PersonalNotesTab> {
     setState(() => _isSaving = true);
     try {
       await ApiService.savePersonalNotes(widget.classroom.id, _controller.text);
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Personal notes saved successfully!')));
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Personal notes saved successfully!')));
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.toString())));
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(e.toString())));
     } finally {
       setState(() => _isSaving = false);
     }
@@ -1051,7 +1254,8 @@ class _PersonalNotesTabState extends State<PersonalNotesTab> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const Text('Your Private Notes (Only visible & modifiable by you)', style: TextStyle(color: Colors.white60, fontSize: 13)),
+          const Text('Your Private Notes (Only visible & modifiable by you)',
+              style: TextStyle(color: Colors.white60, fontSize: 13)),
           const SizedBox(height: 12),
           Expanded(
             child: TextField(
@@ -1060,7 +1264,8 @@ class _PersonalNotesTabState extends State<PersonalNotesTab> {
               expands: true,
               textAlignVertical: TextAlignVertical.top,
               decoration: const InputDecoration(
-                hintText: 'Type your personal notes, reminders, or modifications here...',
+                hintText:
+                    'Type your personal notes, reminders, or modifications here...',
                 border: OutlineInputBorder(),
                 filled: true,
                 fillColor: Color(0xFF1E293B),
@@ -1070,9 +1275,14 @@ class _PersonalNotesTabState extends State<PersonalNotesTab> {
           const SizedBox(height: 16),
           ElevatedButton.icon(
             onPressed: _isSaving ? null : _saveNotes,
-            style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF6366F1), padding: const EdgeInsets.symmetric(vertical: 16)),
+            style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF6366F1),
+                padding: const EdgeInsets.symmetric(vertical: 16)),
             icon: const Icon(Icons.save, color: Colors.white),
-            label: _isSaving ? const CircularProgressIndicator(color: Colors.white) : const Text('Save Notes', style: TextStyle(color: Colors.white)),
+            label: _isSaving
+                ? const CircularProgressIndicator(color: Colors.white)
+                : const Text('Save Notes',
+                    style: TextStyle(color: Colors.white)),
           ),
         ],
       ),

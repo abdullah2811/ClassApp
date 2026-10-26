@@ -1,0 +1,9 @@
+{
+  "elements": {},
+  "imports": [
+    "package:dio/dio.dart",
+    "package:class_app/core/network/api_client.dart",
+    "package:class_app/core/storage/secure_token_storage.dart",
+    "package:class_app/models/models.dart"
+  ]
+}

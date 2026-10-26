@@ -1,0 +1,8 @@
+{
+  "elements": {},
+  "imports": [
+    "package:connectivity_plus/connectivity_plus.dart",
+    "package:drift/drift.dart",
+    "package:class_app/core/storage/app_database.dart"
+  ]
+}

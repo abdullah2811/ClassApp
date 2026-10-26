@@ -1,0 +1,8 @@
+{
+  "elements": {},
+  "imports": [
+    "package:dio/dio.dart",
+    "package:class_app/core/constants/app_config.dart",
+    "package:class_app/core/storage/secure_token_storage.dart"
+  ]
+}

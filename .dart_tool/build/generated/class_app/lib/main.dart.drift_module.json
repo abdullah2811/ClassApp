@@ -1,0 +1,10 @@
+{
+  "elements": {},
+  "imports": [
+    "package:flutter/material.dart",
+    "package:google_fonts/google_fonts.dart",
+    "package:class_app/services/api_service.dart",
+    "package:class_app/services/notification_service.dart",
+    "package:class_app/models/models.dart"
+  ]
+}
